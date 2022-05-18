@@ -1,0 +1,5 @@
+<launch>
+  <include file="$(find staubli_tx2_60l_moveit_config)/launch/demo.launch.py">
+    <arg name="pipeline" value="chomp"/>
+  </include>
+</launch>
