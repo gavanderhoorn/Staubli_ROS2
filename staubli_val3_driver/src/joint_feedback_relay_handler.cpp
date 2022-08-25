@@ -23,7 +23,7 @@
  OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "joint_feedback_relay_handler.hpp"
+#include "staubli_val3_driver/joint_feedback_relay_handler.hpp"
 #include "rcpputils/asserts.hpp"
 
 JointFeedbackRelayHandler::JointFeedbackRelayHandler() : Node("joint_feedback_relay_handler")
@@ -33,7 +33,7 @@ JointFeedbackRelayHandler::JointFeedbackRelayHandler() : Node("joint_feedback_re
 bool JointFeedbackRelayHandler::init(industrial::smpl_msg_connection::SmplMsgConnection* connection, 
                                      std::vector<std::string> &joint_names)
 {
-    pub_joint_control_state_ = this->create_publisher<control_msgs::action::FollowJointTrajectory_Feedback>("feedback_states", 1);
+    pub_joint_control_state_ = this->create_publisher<control_msgs::action::FollowJointTrajectory_FeedbackMessage>("feedback_states", 1);
     pub_joint_sensor_state_ = this->create_publisher<sensor_msgs::msg::JointState>("joint_states", 1);
     all_joint_names_ = joint_names;
 
@@ -41,7 +41,7 @@ bool JointFeedbackRelayHandler::init(industrial::smpl_msg_connection::SmplMsgCon
 }
 
 bool JointFeedbackRelayHandler::createMessages(industrial::joint_feedback_message::JointFeedbackMessage &msg_in,
-                                               control_msgs::action::FollowJointTrajectory_Feedback *control_state,
+                                               control_msgs::action::FollowJointTrajectory_FeedbackMessage *control_state,
                                                sensor_msgs::msg::JointState *sensor_state)
 {
     //Read all joint positions/velocities from JointFeedbackMessage
@@ -98,11 +98,11 @@ bool JointFeedbackRelayHandler::createMessages(industrial::joint_feedback_messag
     }
 
     //Assign values to messages
-    control_msgs::action::FollowJointTrajectory_Feedback tmp_control_state;
-    tmp_control_state.header.stamp = this->now();
-    tmp_control_state.joint_names = pub_joint_names;
-    if(has_pos) tmp_control_state.actual.positions = pub_joint_pos;
-    if(has_vel) tmp_control_state.actual.velocities = pub_joint_vel;\
+    control_msgs::action::FollowJointTrajectory_FeedbackMessage tmp_control_state;
+    tmp_control_state.feedback.header.stamp = this->now();
+    tmp_control_state.feedback.joint_names = pub_joint_names;
+    if(has_pos) tmp_control_state.feedback.actual.positions = pub_joint_pos;
+    if(has_vel) tmp_control_state.feedback.actual.velocities = pub_joint_vel;
     *control_state = tmp_control_state;
 
     sensor_msgs::msg::JointState tmp_sensor_state;
@@ -154,7 +154,7 @@ bool JointFeedbackRelayHandler::internalCB(industrial::simple_message::SimpleMes
 
 bool JointFeedbackRelayHandler::internalCB(industrial::joint_feedback_message::JointFeedbackMessage &in)
 {
-    control_msgs::action::FollowJointTrajectory_Feedback control_state;
+    control_msgs::action::FollowJointTrajectory_FeedbackMessage control_state;
     sensor_msgs::msg::JointState sensor_state;
     bool rtn = true;
 

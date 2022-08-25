@@ -76,7 +76,6 @@ public:
 	 * \return true if parameter found, false if not found
 	 */
 	bool getJointVelocityLimits(const std::string node_name, const std::string urdf_param_name, std::map<std::string, double> &velocity_limits);
-
 };																																																																											
 } //industrial_utils::param
 } //industrial_utils

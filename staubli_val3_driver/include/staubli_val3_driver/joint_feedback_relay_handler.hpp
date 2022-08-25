@@ -29,6 +29,7 @@
 #include "control_msgs/action/follow_joint_trajectory.hpp"
 #include "simple_message/message_handler.hpp"
 #include "simple_message/messages/joint_feedback_message.hpp"
+
 #include "rclcpp/rclcpp.hpp"
 
 
@@ -73,7 +74,7 @@ protected:
    * @return false otherwise
    */
   virtual bool createMessages(industrial::joint_feedback_message::JointFeedbackMessage &msg_in,
-                              control_msgs::action::FollowJointTrajectory_Feedback *control_state,
+                              control_msgs::action::FollowJointTrajectory_FeedbackMessage *control_state,
                               sensor_msgs::msg::JointState *sensor_state);
 
   /**
@@ -115,7 +116,7 @@ protected:
 
 
   std::vector<std::string> all_joint_names_;
-  rclcpp::Publisher<control_msgs::action::FollowJointTrajectory_Feedback>::SharedPtr pub_joint_control_state_;
+  rclcpp::Publisher<control_msgs::action::FollowJointTrajectory_FeedbackMessage>::SharedPtr pub_joint_control_state_;
   rclcpp::Publisher<sensor_msgs::msg::JointState>::SharedPtr pub_joint_sensor_state_;
 
 private:

@@ -23,7 +23,7 @@
  OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "write_single_io.hpp"
+#include "staubli_val3_driver/write_single_io.hpp"
 #include "rclcpp/rclcpp.hpp"
 
 WriteSingleIO::WriteSingleIO()

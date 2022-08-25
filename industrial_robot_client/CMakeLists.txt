@@ -128,10 +128,10 @@ add_library(action_server
   SHARED
   src/joint_trajectory_action.cpp
 )
-# target_link_libraries(action_server
-#   ${PROJECT_NAME}
-#   ${THIS_PACKAGE_LIBRARIES}
-# )
+target_link_libraries(action_server
+  ${PROJECT_NAME}
+  ${THIS_PACKAGE_LIBRARIES}
+)
 target_include_directories(action_server
   PRIVATE
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>

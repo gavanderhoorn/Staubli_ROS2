@@ -25,8 +25,8 @@
 
 #include <string>
 
-#include "system_interface.hpp"
-#include "set_drive_power_message.hpp"
+#include "staubli_val3_driver/system_interface.hpp"
+#include "staubli_val3_driver/set_drive_power_message.hpp"
 #include "rclcpp/rclcpp.hpp"
 #include "industrial_msgs/srv/set_drive_power.hpp"
 #include "simple_message/simple_message.hpp"

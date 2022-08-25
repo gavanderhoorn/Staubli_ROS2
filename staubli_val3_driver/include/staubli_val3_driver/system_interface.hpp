@@ -27,7 +27,7 @@
 
 #include <string>
 
-#include "set_drive_power_message.hpp"
+#include "staubli_val3_driver/set_drive_power_message.hpp"
 #include "industrial_msgs/srv/set_drive_power.hpp"
 #include "simple_message/socket/simple_socket.hpp"
 #include "simple_message/smpl_msg_connection.hpp"

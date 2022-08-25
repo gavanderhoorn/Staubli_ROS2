@@ -25,7 +25,7 @@
 
 #pragma once
 
-#include "write_single_io.hpp"
+#include "staubli_val3_driver/write_single_io.hpp"
 
 #include "simple_message/typed_message.hpp"
 #include "simple_message/simple_message.hpp"

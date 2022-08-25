@@ -23,7 +23,7 @@
  OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "system_interface.hpp"
+#include "staubli_val3_driver/system_interface.hpp"
 #include "rclcpp/rclcpp.hpp"
 
 int main(int argc, char** argv)

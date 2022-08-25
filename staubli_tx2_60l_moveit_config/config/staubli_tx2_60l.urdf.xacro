@@ -3,7 +3,7 @@
     <xacro:arg name="initial_positions_file" default="initial_positions.yaml" />
 
     <!-- Import panda urdf file -->
-    <xacro:include filename="$(find staubli_tx2_60l_description)/urdf/staubli_tx2_60l.xacro" />
+    <xacro:include filename="$(find staubli_tx2_60l_description)/urdf/staubli_tx2_60l.urdf.xacro" />
 
     <!-- Import panda ros2_control description -->
     <xacro:include filename="staubli_tx2_60l.ros2_control.xacro" />

@@ -41,7 +41,7 @@ namespace param
 ParamUtils::ParamUtils() : Node("param_utils")
 {
 }
-bool ParamUtils::getListParam(const std::string node_name, const std::string param_name, std::vector<std::string> & list_param)
+bool ParamUtils::getListParam(const std::string thisname, const std::string param_name, std::vector<std::string> & list_param)
 {
   bool rtn = false;
   std::vector<rclcpp::Parameter> rpc_lists = {};
@@ -49,7 +49,7 @@ bool ParamUtils::getListParam(const std::string node_name, const std::string par
   list_param.clear();
   
   //Prepare the parameter sync to obtain parameters from other nodes
-  auto parameters_client = std::make_shared<rclcpp::SyncParametersClient>(this, node_name);
+  auto parameters_client = std::make_shared<rclcpp::SyncParametersClient>(this, thisname);
   while (!parameters_client->wait_for_service(1s)) {
     if (!rclcpp::ok()) {
       RCLCPP_ERROR(this->get_logger(), "Interrupted while waiting for the service. Exiting.");
@@ -78,7 +78,7 @@ bool ParamUtils::getListParam(const std::string node_name, const std::string par
     }
     else
     {
-      RCLCPP_ERROR_STREAM(this->get_logger(), "Parameter: " + param_name + " of node: " + node_name + " is not of type string_array");
+      RCLCPP_ERROR_STREAM(this->get_logger(), "Parameter: " + param_name + " of node: " + thisname + " is not of type string_array");
     }
   }
   else
@@ -98,14 +98,14 @@ std::string ParamUtils::vec2str(const std::vector<std::string> &vec)
   return "[" + s.erase(s.length()-2) + "]";
 }
 
-bool ParamUtils::getJointNames(const std::string joint_names_node_name, const std::string urdf_node_name, const std::string joint_list_param, const std::string urdf_param,
+bool ParamUtils::getJointNames(const std::string joint_names_thisname, const std::string urdf_thisname, const std::string joint_list_param, const std::string urdf_param,
 		           std::vector<std::string> & joint_names)
 {
   joint_names.clear();
 
   // 1) Try to read explicit list of joint names
   // Setup service client to get the params out of the desired node
-  auto joint_names_parameters_client = std::make_shared<rclcpp::SyncParametersClient>(this, joint_names_node_name);
+  auto joint_names_parameters_client = std::make_shared<rclcpp::SyncParametersClient>(this, joint_names_thisname);
   while (!joint_names_parameters_client->wait_for_service(1s)) {
     if (!rclcpp::ok()) {
       RCLCPP_ERROR(this->get_logger(), "Interrupted while waiting for the service. Exiting.");
@@ -114,17 +114,17 @@ bool ParamUtils::getJointNames(const std::string joint_names_node_name, const st
     RCLCPP_INFO(this->get_logger(), "service not available, waiting again...");
   }
   
-  if (joint_names_parameters_client->has_parameter(joint_list_param) && getListParam(joint_names_node_name, joint_list_param, joint_names))
+  if (joint_names_parameters_client->has_parameter(joint_list_param) && getListParam(joint_names_thisname, joint_list_param, joint_names))
   {
     RCLCPP_INFO_STREAM(this->get_logger(), "Found user-specified joint names in '" << joint_list_param << "': " << vec2str(joint_names));
     return true;
   }
   else
-    RCLCPP_WARN_STREAM(this->get_logger(), "Unable to find user-specified joint names in '" << joint_list_param << "'" << " from node: '" << joint_names_node_name << "'");
+    RCLCPP_WARN_STREAM(this->get_logger(), "Unable to find user-specified joint names in '" << joint_list_param << "'" << " from node: '" << joint_names_thisname << "'");
 
   // 2) Try to find joint names from URDF model
   // Setup another service client for urdf param
-  auto urdf_parameters_client = std::make_shared<rclcpp::SyncParametersClient>(this, urdf_node_name);
+  auto urdf_parameters_client = std::make_shared<rclcpp::SyncParametersClient>(this, urdf_thisname);
   while (!urdf_parameters_client->wait_for_service(1s)) {
     if (!rclcpp::ok()) {
       RCLCPP_ERROR(this->get_logger(), "Interrupted while waiting for the service. Exiting.");
@@ -134,14 +134,14 @@ bool ParamUtils::getJointNames(const std::string joint_names_node_name, const st
   }
   urdf::ModelExtention model;
   if ( urdf_parameters_client->has_parameter(urdf_param)
-       && model.initParam(urdf_node_name, urdf_param)
+       && model.initParam(urdf_thisname, urdf_param)
        && findChainJointNames(model.getRoot(), true, joint_names) )
   {
     RCLCPP_INFO_STREAM(this->get_logger(), "Using joint names from URDF: '" << urdf_param << "': " << vec2str(joint_names));
     return true;
   }
   else
-    RCLCPP_WARN_STREAM(this->get_logger(), "Unable to find URDF joint names in '" << urdf_param << "'" << " at node: " << urdf_node_name << "'");
+    RCLCPP_WARN_STREAM(this->get_logger(), "Unable to find URDF joint names in '" << urdf_param << "'" << " at node: " << urdf_thisname << "'");
 
   // 3) Raise an error
   RCLCPP_ERROR_STREAM(this->get_logger(),
@@ -150,10 +150,10 @@ bool ParamUtils::getJointNames(const std::string joint_names_node_name, const st
   return false;
 }
 
-bool ParamUtils::getJointVelocityLimits(const std::string node_name, const std::string urdf_param_name, std::map<std::string, double> &velocity_limits)
+bool ParamUtils::getJointVelocityLimits(const std::string thisname, const std::string urdf_param_name, std::map<std::string, double> &velocity_limits)
 {
   // Setup service client to get the params out of the desired node
-  auto parameters_client = std::make_shared<rclcpp::SyncParametersClient>(this, node_name);
+  auto parameters_client = std::make_shared<rclcpp::SyncParametersClient>(this, thisname);
 
   while (!parameters_client->wait_for_service(1s)) {
     if (!rclcpp::ok()) {
@@ -166,7 +166,7 @@ bool ParamUtils::getJointVelocityLimits(const std::string node_name, const std::
   urdf::ModelExtention model;
   std::map<std::string, urdf::JointSharedPtr >::iterator iter;
 
-  if (!parameters_client->has_parameter(urdf_param_name) || !model.initParam(node_name, urdf_param_name))
+  if (!parameters_client->has_parameter(urdf_param_name) || !model.initParam(thisname, urdf_param_name))
     return false;
     
   velocity_limits.clear();

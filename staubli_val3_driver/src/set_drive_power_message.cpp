@@ -23,7 +23,7 @@
  OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "set_drive_power_message.hpp"
+#include "staubli_val3_driver/set_drive_power_message.hpp"
 
 #include "simple_message/byte_array.hpp"
 #include "rclcpp/rclcpp.hpp"

@@ -21,29 +21,47 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 # OTHER DEALINGS IN THE SOFTWARE.
 
-
 from launch import LaunchDescription
 from launch_ros.actions import Node
-from ament_index_python.packages import get_package_share_directory
-from pathlib import Path
-
-parameters_file_path = Path(get_package_share_directory('robot_middleware'), 'config', 'settings.yaml')
+from launch.actions import DeclareLaunchArgument
+from launch.substitutions import LaunchConfiguration
 
 def generate_launch_description():
-
-    #Nodes
-    nodes = []
-    nodes.append(
-            Node(
-            package="robot_middleware",
-            executable="robot_middleware",
-            output="screen",
-            parameters=[
-                parameters_file_path
-            ],
-        )
+    robot_ip_launch_arg = DeclareLaunchArgument(
+        "robot_ip",
+        description="IP address of the robot",
+    )
+    robot_ip = LaunchConfiguration(
+        "robot_ip",
+    )
+    
+    robot_state_node = Node(
+        package="industrial_robot_client",
+        executable="robot_state",
+        name="robot_state",
+        parameters=[
+            {"robot_ip_address": robot_ip},
+        ],
+    )
+    motion_streaming_interface_node = Node(
+        package="industrial_robot_client",
+        executable="motion_streaming_interface",
+        name="motion_streaming_interface",
+        parameters=[
+            {"robot_ip_address": robot_ip},
+        ]
+    )
+    joint_trajectory_action_node = Node(
+        package="industrial_robot_client",
+        executable="joint_trajectory_action",
+        name="joint_trajectory_action",
     )
 
     return LaunchDescription(
-         nodes
+        [
+            robot_ip_launch_arg,
+            robot_state_node,
+            motion_streaming_interface_node,
+            joint_trajectory_action_node
+        ]
     )

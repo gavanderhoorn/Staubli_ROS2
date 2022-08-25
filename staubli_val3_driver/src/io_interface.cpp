@@ -23,8 +23,8 @@
  OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "io_interface.hpp"
-#include "write_single_io_message.hpp"
+#include "staubli_val3_driver/io_interface.hpp"
+#include "staubli_val3_driver/write_single_io_message.hpp"
 
 #include "rclcpp/rclcpp.hpp"
 #include "simple_message/simple_message.hpp"

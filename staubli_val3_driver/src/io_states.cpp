@@ -23,7 +23,7 @@
  OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "io_states.hpp"
+#include "staubli_val3_driver/io_states.hpp"
 
 #include "simple_message/shared_types.hpp"
 #include "rclcpp/rclcpp.hpp"

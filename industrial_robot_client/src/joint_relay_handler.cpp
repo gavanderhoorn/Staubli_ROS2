@@ -42,7 +42,7 @@ JointRelayHandler::JointRelayHandler() : Node("joint_relay_handler")
 bool JointRelayHandler::init(industrial::smpl_msg_connection::SmplMsgConnection *connection, 
                              std::vector<std::string>& joint_names)
 {
-  pub_joint_control_state_ = this->create_publisher<control_msgs::action::FollowJointTrajectory_Feedback>("feedback_states", 1);
+  pub_joint_control_state_ = this->create_publisher<control_msgs::action::FollowJointTrajectory_FeedbackMessage>("feedback_states", 1);
   pub_joint_sensor_state_ = this->create_publisher<sensor_msgs::msg::JointState>("joint_states",1);
 
   // save "complete" joint-name list, preserving any blank entries for later use
@@ -66,7 +66,7 @@ bool JointRelayHandler::internalCB(industrial::simple_message::SimpleMessage &in
 
 bool JointRelayHandler::internalCB(industrial::joint_message::JointMessage &in)
 {
-  control_msgs::action::FollowJointTrajectory_Feedback control_state;
+  control_msgs::action::FollowJointTrajectory_FeedbackMessage control_state;
   sensor_msgs::msg::JointState sensor_state;
   bool rtn = true;
 
@@ -91,7 +91,7 @@ bool JointRelayHandler::internalCB(industrial::joint_message::JointMessage &in)
 
 // TODO: Add support for other message fields (velocity, effort, desired pos)
 bool JointRelayHandler::create_messages(industrial::joint_message::JointMessage &msg_in,
-                                        control_msgs::action::FollowJointTrajectory_Feedback *control_state,
+                                        control_msgs::action::FollowJointTrajectory_FeedbackMessage *control_state,
                                         sensor_msgs::msg::JointState *sensor_state)
 {
   // read joint positions from JointMessage
@@ -123,10 +123,10 @@ bool JointRelayHandler::create_messages(industrial::joint_message::JointMessage 
   }
 
   // assign values to messages
-  control_msgs::action::FollowJointTrajectory_Feedback tmp_control_state;  // always start with a "clean" message
-  tmp_control_state.header.stamp = this->now();
-  tmp_control_state.joint_names = pub_joint_names;
-  tmp_control_state.actual.positions = pub_joint_pos;
+  control_msgs::action::FollowJointTrajectory_FeedbackMessage tmp_control_state;  // always start with a "clean" message
+  tmp_control_state.feedback.header.stamp = this->now();
+  tmp_control_state.feedback.joint_names = pub_joint_names;
+  tmp_control_state.feedback.actual.positions = pub_joint_pos;
   *control_state = tmp_control_state;
 
   sensor_msgs::msg::JointState tmp_sensor_state;

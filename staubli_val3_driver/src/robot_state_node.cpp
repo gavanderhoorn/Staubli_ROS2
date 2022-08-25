@@ -23,7 +23,7 @@
  OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "joint_feedback_relay_handler.hpp"
+#include "staubli_val3_driver/joint_feedback_relay_handler.hpp"
 #include "industrial_robot_client/robot_state_interface.hpp"
 #include "rclcpp/rclcpp.hpp"
 

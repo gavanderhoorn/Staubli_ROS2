@@ -8,12 +8,17 @@
 
         <!--Plunger intervention-->
         <link name="plunger_tooltip"/>
-        <link name="realsense_lidar"/>
+        <link name="camera_color_optical_frame"/>
+        <link name="test"/>
+        <link name="test2"/>
 
         <!--Petri intervention-->
         <link name="petri_tooltip"/>
-        <link name="petri_pickup"/>
-        <link name="petri_dropoff"/>
+        <!-- <link name="petri_pickup"/>
+        <link name="petri_dropoff"/> -->
+
+        <!--Stoter intervention-->
+        <link name="stoter_tooltip"/>
 
         <!--Allignment links-->
         <link name="allignTable"/>
@@ -34,17 +39,27 @@
         </joint>
         <joint name="tool0_to_camera" type="fixed">
             <parent link="tool0"/>
-            <child link="realsense_lidar"/>
+            <child link="camera_color_optical_frame"/>
             <origin xyz="0.0838 0.0845 0.2422" rpy="${radians(-88.6689)} ${radians(0.3632)} ${radians(-44.8563)}"/>
+        </joint>
+        <joint name="base_link_to_test" type="fixed">
+            <parent link="base_link"/>
+            <child link="test"/>
+            <origin xyz="0.7 0.2 0.3" rpy="0 ${radians(180)} 0"/>
+        </joint>
+        <joint name="base_link_to_test2" type="fixed">
+            <parent link="base_link"/>
+            <child link="test2"/>
+            <origin xyz="0.5 -0.2 0.15" rpy="0 ${radians(180)} 0"/>
         </joint>
 
         <!--Petri intervention-->
         <joint name="tool0_to_petri_tooltip" type="fixed">
             <parent link="tool0"/>
             <child link="petri_tooltip"/>
-            <origin xyz="0 0 0.290" rpy="0 0 0"/>
+            <origin xyz="0 0 0.2235" rpy="0 0 0"/>
         </joint>
-        <joint name="base_to_petri_pickup" type="fixed">
+        <!-- <joint name="base_to_petri_pickup" type="fixed">
             <parent link="base"/>
             <child link="petri_pickup"/>
             <origin xyz ="0.640 -0.300 -0.304" rpy="${radians(180)} ${radians(0)} ${radians(0)}"/>
@@ -53,6 +68,13 @@
             <parent link="base"/>
             <child link="petri_dropoff"/>
             <origin xyz ="0.320 0.200 -0.304" rpy="${radians(180)} ${radians(0)} ${radians(0)}"/>
+        </joint> -->
+
+        <!--Stoter intervention-->
+        <joint name="tool0_to_stoter_tooltip" type="fixed">
+            <parent link="tool0"/>
+            <child link="stoter_tooltip"/>
+            <origin xyz="0.0218 0.0218 0.1355" rpy="${radians(-45)} ${radians(90)} 0"/>
         </joint>
 
         <!--Allignment joints-->

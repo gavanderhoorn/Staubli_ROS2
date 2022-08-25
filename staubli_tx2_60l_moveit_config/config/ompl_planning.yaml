@@ -149,6 +149,8 @@ manipulator:
     - SPARSkConfigDefault
     - SPARStwokConfigDefault
     - TrajOptDefault
+
+  default_planner_config: PRMkConfigDefault
 # panda_arm_hand:
 #   planner_configs:
 #     - SBLkConfigDefault

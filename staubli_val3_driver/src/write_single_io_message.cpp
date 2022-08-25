@@ -23,7 +23,7 @@
  OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "write_single_io_message.hpp"
+#include "staubli_val3_driver/write_single_io_message.hpp"
 
 #include "simple_message/byte_array.hpp"
 #include "rclcpp/rclcpp.hpp"

@@ -23,7 +23,7 @@
  OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "read_io_message.hpp"
+#include "staubli_val3_driver/read_io_message.hpp"
 
 #include "simple_message/byte_array.hpp"
 #include "simple_message/simple_message.hpp"
