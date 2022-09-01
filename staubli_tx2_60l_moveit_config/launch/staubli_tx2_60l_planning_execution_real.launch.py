@@ -85,7 +85,7 @@ def generate_launch_description():
     trajectory_execution = {
         "moveit_manage_controllers": False,
         "trajectory_execution.execution_duration_monitoring": False,
-        "trajectory_execution.allowed_execution_duration_scaling": 10.0,
+        "trajectory_execution.allowed_execution_duration_scaling": 100.0,
         "trajectory_execution.allowed_goal_duration_margin": 0.5,
         "trajectory_execution.allowed_start_tolerance": 0.01,
     }

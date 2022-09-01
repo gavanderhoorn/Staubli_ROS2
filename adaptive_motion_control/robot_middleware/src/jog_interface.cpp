@@ -113,7 +113,6 @@ void JogInterface::twistCb(const geometry_msgs::msg::TwistStamped::SharedPtr cmd
 
 void JogInterface::jointJogCb(const control_msgs::msg::JointJog::SharedPtr cmd) 
 {
-  RCLCPP_INFO(node_->get_logger(), "test");
   rclcpp::Time timestamp = node_->now();
   std::lock_guard<std::mutex> lock(state_mtx_);
   bool in_error = inError(timestamp);

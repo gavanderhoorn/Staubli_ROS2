@@ -53,10 +53,10 @@ bool VelocityControlSettings::initParam()
   node_->declare_parameter<std::string>("velocity_control_tool_frame", "tool0");
   node_->declare_parameter<double>("velocity_control_control_loop_frequency", 250.0);
   node_->declare_parameter<double>("velocity_control_max_linear_velocity", 0.250);
-  node_->declare_parameter<double>("velocity_control_max_angular_velocity", toRadians(60.0));
+  node_->declare_parameter<double>("velocity_control_max_angular_velocity", 60.0);
   node_->declare_parameter<bool>("velocity_control_has_velocity_limit", true);
-  node_->declare_parameter<double>("velocity_control_max_velocity", toRadians(60.0));
-  node_->declare_parameter<double>("velocity_control_stop_tolerance", toRadians(3.0));
+  node_->declare_parameter<double>("velocity_control_max_velocity", 60.0);
+  node_->declare_parameter<double>("velocity_control_stop_tolerance", 3.0);
 
   node_->get_parameter<std::string>("velocity_control_base_frame", base_frame);
   node_->get_parameter<std::string>("velocity_control_tool_frame", tool_frame);
@@ -66,6 +66,10 @@ bool VelocityControlSettings::initParam()
   node_->get_parameter<bool>("velocity_control_has_velocity_limit", joint_limits.has_velocity_limit);
   node_->get_parameter<double>("velocity_control_max_velocity", joint_limits.max_velocity);
   node_->get_parameter<double>("velocity_control_stop_tolerance", joint_limits.stop_tolerance);
+
+  cartesian_limits.max_angular_velocity = toRadians(cartesian_limits.max_angular_velocity);
+  joint_limits.max_velocity = toRadians(joint_limits.max_velocity);
+  joint_limits.stop_tolerance = toRadians(joint_limits.stop_tolerance);
 
   return true;
 }

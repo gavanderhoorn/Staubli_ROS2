@@ -374,6 +374,11 @@ void RobotDriver::computeJointLimitsScale(const Vector& joint_pos, const Vector&
       double lower_limit = joint_limits_[i].min_position_ + vel_ctrl_settings_->joint_limits.stop_tolerance;
       double upper_limit = joint_limits_[i].max_position_ - vel_ctrl_settings_->joint_limits.stop_tolerance;
 
+      if(joint_vel[i] != 0)
+      {
+        RCLCPP_WARN(node_->get_logger(), "stop tolerance: " + std::to_string(angles::to_degrees(vel_ctrl_settings_->joint_limits.stop_tolerance)));
+      }
+
       if ((joint_pos[i] <= lower_limit && joint_vel[i] < 0) || (joint_pos[i] >= upper_limit && joint_vel[i] > 0))
       {
         // stop to avoid hitting position limit
