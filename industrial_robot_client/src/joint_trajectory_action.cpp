@@ -328,7 +328,7 @@ private:
     rclcpp_action::CancelResponse handle_cancel(const std::shared_ptr<GoalHandleFJT> goal_handle)
     {
         RCLCPP_DEBUG(this->get_logger(), "Received action cancel request");
-        if(active_goal_ == *goal_handle->get_goal())
+        if(goal_handle_ == goal_handle)
         {
             has_active_goal_ = false;
             (void)goal_handle;
@@ -355,23 +355,22 @@ private:
         std::shared_ptr<FJT::Feedback> feedback = std::make_shared<FJT::Feedback>();
         std::shared_ptr<FJT::Result> result  = std::make_shared<FJT::Result>();
         
-        if(goal_handle->is_canceling())
-        {
-            trajectory_msgs::msg::JointTrajectory empty;
-            empty.joint_names = joint_names_;
-            pub_trajectory_command_->publish(empty);
-            goal_handle->canceled(result);
-            RCLCPP_INFO(this->get_logger(), "Goal cancelled");
-            has_succeeded_ = false;
-
-            return;
-        }
         pub_trajectory_command_->publish(current_traj_);
         goal_handle->publish_feedback(feedback);
         RCLCPP_INFO(this->get_logger(), "Publishing feedback");
 
         while (rclcpp::ok())
         {
+            if(goal_handle->is_canceling())
+            {
+                trajectory_msgs::msg::JointTrajectory empty;
+                empty.joint_names = joint_names_;
+                pub_trajectory_command_->publish(empty);
+                goal_handle->canceled(result);
+                RCLCPP_INFO(this->get_logger(), "Goal cancelled");
+                has_succeeded_ = false;
+                return;
+            }
             if(has_succeeded_)
             {
                 goal_handle->succeed(result);
