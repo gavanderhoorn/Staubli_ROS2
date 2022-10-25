@@ -4,6 +4,8 @@
 > This is a fork of a now deleted repository. Upstream was at `IvoD1998/Staubli_ROS2`.
 > I am not the developer, nor maintainer of the code in this fork.
 
+<details><summary>Click to expand original readme</summary>
+
 # Staubli_ROS2
 ROS2 port of the Staubli_VAL3_ROS driver with all components it requires
 
@@ -49,6 +51,4 @@ There are 3 different options for using this package:
     7) ros2 run industrial_robot_client joint_trajectory_action
     8) ros2 run moveit_interface moveit_interface planning_group:=manipulator
     ```
-
-  
- 
+</details>
