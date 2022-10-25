@@ -1,3 +1,9 @@
+# Status
+
+> **Note**
+> This is a fork of a now deleted repository. Upstream was at `IvoD1998/Staubli_ROS2`.
+> I am not the developer, nor maintainer of the code in this fork.
+
 # Staubli_ROS2
 ROS2 port of the Staubli_VAL3_ROS driver with all components it requires
 
